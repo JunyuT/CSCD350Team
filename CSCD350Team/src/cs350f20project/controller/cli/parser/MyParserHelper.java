@@ -19,4 +19,20 @@ public class MyParserHelper extends A_ParserHelper {
 		return out;
 	}
 	
+	public boolean parseLogicalToBoolean(String in, String op1, String op2){
+		if (in.equals(op1)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean checkLogical(String in, String op1, String op2) {
+		if (in.equals(op1) || in.equals(op2)) {
+			return true;
+		} else {
+			System.out.println("Expected <" + op1 + "> or <" + op2 + ">");
+			return false;
+		}
+	}
 }
