@@ -42,6 +42,7 @@ public class CommandParser {
 			if (comArray[0].equals("DO")) { // DO BRAKE wip
 				if (comArray[1].equals("BRAKE")) {
 					A_Command command = new CommandBehavioralBrake(comArray[2]);
+					this.parserHelper.getActionProcessor().schedule(command);
 				}
 			}
 			
@@ -49,16 +50,17 @@ public class CommandParser {
 			if (comArray[0].equals("DO")) { 
 				if (comArray[1].equals("SELECT")) {
 					if (comArray[2].equals("DRAWBRIDGE")) {
-						if (comArray[4] == "UP") {
-						A_Command command = new CommandBehavioralSelectBridge(comArray[3], true);
-						this.parserHelper.getActionProcessor().schedule(command);
-						}
-						if (comArray[4] == "DOWN") {
-							A_Command command = new CommandBehavioralSelectBridge(comArray[3], false);
-							this.parserHelper.getActionProcessor().schedule(command);
+						if (comArray[4].equals("POSITION")) {
+							if (comArray[5] == "UP") {
+								A_Command command = new CommandBehavioralSelectBridge(comArray[3], true);
+								this.parserHelper.getActionProcessor().schedule(command);
+							}
+							if (comArray[5] == "DOWN") {
+								A_Command command = new CommandBehavioralSelectBridge(comArray[3], false);
+								this.parserHelper.getActionProcessor().schedule(command);
+							}
 						}
 					}
-					
 				}
 			}
 			
@@ -75,7 +77,6 @@ public class CommandParser {
 							this.parserHelper.getActionProcessor().schedule(command);
 						}
 					}
-					
 				}
 			}
 			
@@ -90,7 +91,6 @@ public class CommandParser {
 							}
 						}
 					}
-						
 				}
 			}
 			
@@ -104,8 +104,7 @@ public class CommandParser {
 								this.parserHelper.getActionProcessor().schedule(command);
 							}
 						}
-					}
-						
+					}	
 				}
 			}
 			
