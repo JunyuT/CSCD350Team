@@ -31,7 +31,7 @@ public class MyParserHelper extends A_ParserHelper {
 				+ "VIEW|"
 				+ "@WAIT|WIDTH|WITH|WORLD|WYE"),
 
-		LONGITUDE("[0-9]+\s*[*]\s*[0-9]+\s*[']\s*[0-9]+[.]?[0-9]+?\s*[\"]"),
+		LONGITUDE("[0-9]+[*][0-9]+['][0-9]+[\\.][0-9]+[\"]"),
 		NUMBER("(-*[0-9]+\\.[0-9]*)"),
 		INTEGER("-*[0-9]+"),
 		COORDINATESDELTA(":"),
