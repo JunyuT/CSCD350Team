@@ -1,4 +1,6 @@
- package cs350f20project.controller.cli.parser;
+package cs350f20project.controller.cli.parser;
+import java.util.ArrayList;
+
 import cs350f20project.controller.command.*;
 import cs350f20project.controller.command.meta.*;
 import cs350f20project.controller.timing.Time;
@@ -14,6 +16,19 @@ public class CommandParser {
 	}
 	
 	public void parse() {
+		String[] commands = this.commandText.split(";");
+		for (String instruction : commands) {
+			ArrayList<Token> tokens = this.parserHelper.getContext(instruction);
+			if (tokens.get(0).type.name().toString().equals("KEYWORD")) {
+				String keyword = tokens.get(0).data;
+				if (keyword.toUpperCase().equals("@EXIT")) {
+					A_Command command = new CommandMetaDoExit();
+					this.parserHelper.getActionProcessor().schedule(command);
+				}
+				
+			}
+		}
+		
 //		String[] commands  = this.commandText.split(";");
 //		int comnum = 0; //Also for testing purposes
 //		for (String instruction : commands) {
@@ -37,8 +52,7 @@ public class CommandParser {
 //				this.parserHelper.getActionProcessor().schedule(command);
 //				System.out.println("here");
 //			}
-			
-			this.parserHelper.getContext(commandText);
+
 		}
 	}
 //}
