@@ -2,6 +2,7 @@ package cs350f20project.controller.cli.parser;
 import java.util.ArrayList;
 
 import cs350f20project.controller.command.*;
+import cs350f20project.controller.command.behavioral.*;
 import cs350f20project.controller.command.meta.*;
 import cs350f20project.controller.timing.Time;
 
@@ -19,40 +20,57 @@ public class CommandParser {
 		String[] commands = this.commandText.split(";");
 		for (String instruction : commands) {
 			ArrayList<Token> tokens = this.parserHelper.getContext(instruction);
-			if (tokens.get(0).type.name().toString().equals("KEYWORD")) {
-				String keyword = tokens.get(0).data;
-				if (keyword.toUpperCase().equals("@EXIT")) {
+			if (this.parserHelper.isCorrectKeyword(tokens.get(0), "DO")) { // DO COMMANDS
+				tokens.remove(0);
+				if (tokens.size() != 0) {
+					parseDoCommands(tokens);
+				}
+			} else if (this.parserHelper.isCorrectKeyword(tokens.get(0), "@EXIT")) { // EXIT
+				if (tokens.size() == 1) {
 					A_Command command = new CommandMetaDoExit();
+					this.parserHelper.getActionProcessor().schedule(command);	
+				} else {
+					throw new RuntimeException("Expected end of command.");
+				}
+			}
+
+		}
+		
+		
+	}
+	
+	
+	public void parseDoCommands(ArrayList<Token> tokens) {
+		if (this.parserHelper.isCorrectKeyword(tokens.get(0), "BRAKE")) { //BRAKE
+			tokens.remove(0);
+			if (tokens.size() != 0) {
+				if (tokens.get(0).type.name() == "ID") {
+					A_Command command = new CommandBehavioralBrake(tokens.get(0).data);
 					this.parserHelper.getActionProcessor().schedule(command);
 				}
-				
+			}
+		}
+
+		if (this.parserHelper.isCorrectKeyword(tokens.get(0), "SELECT")) { //SELECT COMMANDS
+			tokens.remove(0);
+			if (tokens.size() != 0) {
+				parseDoSelectCommands(tokens);
 			}
 		}
 		
-//		String[] commands  = this.commandText.split(";");
-//		int comnum = 0; //Also for testing purposes
-//		for (String instruction : commands) {
-//			comnum++;
-//			instruction = instruction.trim();
-//			String[] comArray = instruction.split(" ");
-//			for (String s : comArray) { //For testing purposes
-//				System.out.println(comnum + ". " + s);
-//			}
-//			
-//			
-//			if (comArray[0].equalsIgnoreCase("@exit")) {   // Exit command
-//				A_Command command = new CommandMetaDoExit();
-//				this.parserHelper.getActionProcessor().schedule(command);
-//			}
-//			
-//			
-//			if (comArray[0].equalsIgnoreCase("@wait")) {   // Wait command
-//				Time time = new Time(Integer.parseInt(comArray[1]));
-//				A_Command command = new CommandMetaDoWait(time);
-//				this.parserHelper.getActionProcessor().schedule(command);
-//				System.out.println("here");
-//			}
-
+	}
+	
+	public void parseDoSelectCommands(ArrayList<Token> tokens) {
+		if (this.parserHelper.isCorrectKeyword(tokens.get(0), "SWITCH")) { //SWITCH
+			tokens.remove(0);
+			if (tokens.size() != 0) {
+				if (tokens.get(0).type.name() == "ID") {
+					A_Command command = new CommandBehavioralBrake(tokens.get(0).data);
+					this.parserHelper.getActionProcessor().schedule(command);
+				}
+			}
 		}
 	}
+	
+}
 //}

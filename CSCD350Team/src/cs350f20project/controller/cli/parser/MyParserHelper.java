@@ -15,7 +15,7 @@ public class MyParserHelper extends A_ParserHelper {
 	
 	public static enum TokenType{
 		KEYWORD("(?i)ANGLE|AS|"
-				+ "BOX|BREAK|BRIDGE"
+				+ "BOX|BRAKE|BRIDGE"
 				+ "CABOOSE|CATENARY|CATENARIES|CLOCKWISE|COMMIT|CLOSE|COUPLE|COUNTERCLOCKWISE|CREATE|CROSSING|CURVE"
 				+ "DELTA|DIESEL|DIRECTION|DISTANCE|DO|DOWN|DRAW|DRAWBRIDGE|"
 				+ "END|ENGINE|ENTRY|@EXIT|"
@@ -51,15 +51,6 @@ public class MyParserHelper extends A_ParserHelper {
 		}
 		
 	}		
-	
-	/**quick explanation 
-	 * (do)|(set)|(create)|(([a-zA-Z_]+(?=\\d)[0-9]+))
-	 * every () is a regex group
-	 * this will extract the input when correct syntax is matched
-	 * it will also give the index of the variables 
-	 * i will declare everything as a string, and we can comment out or uncomment the string to check for specific variables/literals.
-	 * (?i) will ignore case for specific group. enable for literals only
-	**/
 	
 	protected ArrayList<Token> getContext(String input) {
 
@@ -102,6 +93,13 @@ public class MyParserHelper extends A_ParserHelper {
 		}
 		
 		return tokens;
+	}
+	
+	public boolean isCorrectKeyword(Token token, String input) {
+		if (token.type.name().equals("KEYWORD") && token.data.compareToIgnoreCase(input) == 0) {
+			return true;
+		}
+		return false;
 	}
 
 }
