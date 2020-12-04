@@ -36,9 +36,10 @@ public class MyParserHelper extends A_ParserHelper {
 		INTEGER("-*[0-9]+"),
 		COORDINATESDELTA(":"),
 		COORDINATESWORLD("/"),
-		ID("_*[_a-zA-Z^/]+[0-9]*");
+		ID("[_$a-z]+[_$a-z0-9]*");
 
 		;
+		String abc123abc;
 		
 		private final Pattern pattern;
 		
