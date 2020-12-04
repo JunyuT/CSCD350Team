@@ -13,7 +13,6 @@ public class CommandParser {
 	public CommandParser(MyParserHelper parserHelper, String commandText) {
 		this.commandText = commandText;
 		this.parserHelper = parserHelper;
-		//System.out.println("Junyu's Parser");
 	}
 	
 	public void parse() {
