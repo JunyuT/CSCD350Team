@@ -14,7 +14,7 @@ public class MyParserHelper extends A_ParserHelper {
 	}
 	
 	public static enum TokenType{
-		KEYWORD("(?i)ANGLE|AS|"
+		KEYWORD("(?i)(ANGLE|AS|"
 				+ "BOX|BRAKE|BRIDGE"
 				+ "CABOOSE|CATENARY|CATENARIES|CLOCKWISE|COMMIT|CLOSE|COUPLE|COUNTERCLOCKWISE|CREATE|CROSSING|CURVE"
 				+ "DELTA|DIESEL|DIRECTION|DISTANCE|DO|DOWN|DRAW|DRAWBRIDGE|"
@@ -29,18 +29,14 @@ public class MyParserHelper extends A_ParserHelper {
 				+ "TANK|TENDER|TRACK|TURNOUT|TURNTABLE|"
 				+ "UP|USE|"
 				+ "VIEW|"
-				+ "@WAIT|WIDTH|WITH|WORLD|WYE"),
-
+				+ "@WAIT|WIDTH|WITH|WORLD|WYE)"),
 		LONGITUDE("[0-9]+[*][0-9]+['][0-9]+[\\.][0-9]+[\"]"),
 		NUMBER("(-*[0-9]+\\.[0-9]*)"),
 		INTEGER("-*[0-9]+"),
 		COORDINATESDELTA(":"),
 		COORDINATESWORLD("/"),
-		ID("[_$a-z]+[_$a-z0-9]*");
+		ID("[_$a-zA-Z]+[_$a-zA-Z0-9]*");
 
-		;
-		String abc123abc;
-		
 		private final Pattern pattern;
 		
 		private TokenType(final String regex) {
@@ -89,18 +85,92 @@ public class MyParserHelper extends A_ParserHelper {
 			}
 		}
 		
-		for (Token token : tokens) {
-		      System.out.println(token.type + ": " + token.data);
-		}
-		
 		return tokens;
 	}
 	
 	public boolean isCorrectKeyword(Token token, String input) {
-		if (token.type.name().equals("KEYWORD") && token.data.compareToIgnoreCase(input) == 0) {
+		if (token.getType().name().equals("KEYWORD") && token.getData().compareToIgnoreCase(input) == 0) {
 			return true;
 		}
 		return false;
 	}
-
+	
+//	public String codifyKeyword(Token input) {
+//		switch (input.getData().toUpperCase()) {
+//		case "ANGLE": break;
+//		case "AS": break;
+//		case "BOX": break;
+//		case "BRAKE": break;
+//		case "BRIDGE": break;
+//		case "CABOOSE": break;
+//		case "CATENARY": break;
+//		case "CATENARIES": break;
+//		case "CLOCKWISE": break;
+//		case "COMMIT": break;
+//		case "CLOSE": break;
+//		case "COUPLE": break;
+//		case "COUNTERCLOCKWISE": break;
+//		case "CREATE": break;
+//		case "CROSSING": break;
+//		case "CURVE": break;
+//		case "DELTA": break;
+//		case "DIESEL": break;
+//		case "DIRECTION": break;
+//		case "DISTANCE": break;
+//		case "DO": break;
+//		case "DOWN": break;
+//		case "DRAW": break;
+//		case "DRAWBRIDGE": break;
+//		case "END": break;
+//		case "ENGINE": break;
+//		case "ENTRY": break;
+//		case "@EXIT": break;
+//		case "FACING": break;
+//		case "FLATBED": break;
+//		case "FROM": break;
+//		case "HEIGHT": break;
+//		case "LAYOUT": break;
+//		case "LENGTH": break;
+//		case "OFF": break;
+//		case "ON": break;
+//		case "OPEN": break;
+//		case "ORIGIN": break;
+//		case "PASSENGER": break;
+//		case "PATH": break;
+//		case "POSITION": break;
+//		case "POLE": break;
+//		case "POLES": break;
+//		case "POWER": break;
+//		case "PRIMARY": break;
+//		case "REFERENCE": break;
+//		case "ROUNDHOUSE": break;
+//		case "@RUN": break;
+//		case "SCREEN": break;
+//		case "SECONDARY": break;
+//		case "SELECT": break;
+//		case "SET": break;
+//		case "SPEED": break;
+//		case "SPURS": break;
+//		case "STATION": break;
+//		case "START": break;
+//		case "STOCK": break;
+//		case "STRAIGHT": break;
+//		case "SUBSTATION": break;
+//		case "SUBSTATIONS": break;
+//		case "SWITCH": break;
+//		case "TANK": break;
+//		case "TENDER": break;
+//		case "TRACK": break;
+//		case "TURNOUT": break;
+//		case "TURNTABLE": break;
+//		case "UP": break;
+//		case "USE": break;
+//		case "VIEW": break;
+//		case "@WAIT": break;
+//		case "": break;
+//		
+//		
+//		}
+//		return "??";
+//	}
 }
