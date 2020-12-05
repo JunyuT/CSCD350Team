@@ -1,4 +1,6 @@
 package cs350f20project.controller.cli.parser;
+import java.util.ArrayList;
+
 import cs350f20project.controller.command.*;
 import cs350f20project.controller.command.behavioral.*;
 import cs350f20project.controller.command.meta.*;
@@ -11,37 +13,182 @@ public class CommandParser {
 	public CommandParser(MyParserHelper parserHelper, String commandText) {
 		this.commandText = commandText;
 		this.parserHelper = parserHelper;
+		//System.out.println("Junyu's Parser");
 	}
 	
-	public void parse() throws ParseException {
-		String[] commands  = this.commandText.toLowerCase().split(";");
-		int comnum = 0; //Also for testing purposes
+	public void parse() {
+		String[] commands = this.commandText.split(";");
 		for (String instruction : commands) {
-			comnum++;
-			instruction = instruction.trim();
-			String[] comArray = instruction.split(" ");
-			for (String s : comArray) { //For testing purposes
-				System.out.println(comnum + ". " + s);
+			ArrayList<Token> tokens = this.parserHelper.getContext(instruction);
+			String commandCode = "";
+			for (Token token : tokens) {
+				switch (token.getType().toString()) {
+				case "KEYWORD": commandCode += token.getData().toUpperCase(); break;
+				case "ID": commandCode += "ID"; break;
+				case "LONGITUDE": commandCode += "LX"; break;
+				case "NUMBER": commandCode += "NB"; break;
+				case "INTEGER": commandCode += "INT"; break;
+				case "COORDINATEDELTA": commandCode += ":"; break;
+				case "COORDINATEWORLD": commandCode += "/"; break;
+				case "STRING": commandCode += "STR"; break;
+				case "REFERENCE": commandCode += "$"; break;
+				default: commandCode += "?"; break;
+				}
 			}
-			if (comArray[0].equals("@exit")) {   // Exit command
+			
+			System.out.println(commandCode);
+			
+			if (commandCode.equals("DOBRAKEID")) { //COMMAND 2
+				A_Command command = new CommandBehavioralBrake(tokens.get(2).getData());
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			
+			if (commandCode.equals("DOSELECTSWITCHIDPATHPRIMARY") || commandCode.equals("DOSELECTSWITCHIDPATHSECONDARY")) { //COMMAND 8
+				boolean primary = false;
+				if (tokens.get(5).getData().toUpperCase().equals("PRIMARY")) {
+					primary = true;
+				}
+				A_Command command = new CommandBehavioralSelectSwitch(tokens.get(3).getData(), primary);
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			
+			if (commandCode.equals("DOSETIDSPEEDNB") || commandCode.equals("DOSETIDSPEEDINT")) { //COMMAND 15
+				double speed = Double.parseDouble(tokens.get(4).getData());
+				A_Command command = new CommandBehavioralSetSpeed(tokens.get(2).getData(), speed);
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			
+			if (commandCode.equals("CREATESTOCKCARIDASCABOOSE")) { //COMMAND 29
+				A_Command command = new CommandBehavioralBrake(tokens.get(3).getData());
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			if (commandCode.equals("@EXIT")) { //COMMAND 51
 				A_Command command = new CommandMetaDoExit();
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			
-			if (comArray[0].equals("@wait")) {   // Wait command
-				double REAL = parserHelper.parseReal(comArray[1]);
-				System.out.println(REAL);
-				Time time = new Time(REAL);
-				A_Command command = new CommandMetaDoWait(time);
-				this.parserHelper.getActionProcessor().schedule(command);
+			
+			while (tokens.size() > 0) {
+				System.out.println(tokens.get(0).toString());
+				tokens.remove(0);
 			}
 			
-			if (comArray[0].equals("DO")) { // DO BRAKE wip
-				if (comArray[1].equals("BRAKE")) {
-					A_Command command = new CommandBehavioralBrake(comArray[2]);
-				}
-			}
-		
 		}
+		
+		
 	}
+//	
+//	
+//	public void parseDoCommands(ArrayList<Token> tokens) {
+//		if (this.parserHelper.isCorrectKeyword(tokens.get(0), "BRAKE")) { //BRAKE
+//			tokens.remove(0);
+//			if (tokens.size() != 0) {
+//				if (tokens.get(0).getType().name() == "ID") {
+//					A_Command command = new CommandBehavioralBrake(tokens.get(0).getData());
+//					this.parserHelper.getActionProcessor().schedule(command);
+//				}
+//			}
+//		}
+//		
+//		if (this.parserHelper.isCorrectKeyword(tokens.get(0), "SET")) {
+//			tokens.remove(0);
+//			if (tokens.size() != 0) {
+//				if (tokens.get(0).getType().name().equals("ID")) {
+//					A_Command command = new CommandBehavioralBrake(tokens.get(0).getData());
+//					this.parserHelper.getActionProcessor().schedule(command);
+//				}
+//			}
+//		}
+//
+//		if (this.parserHelper.isCorrectKeyword(tokens.get(0), "SELECT")) { //SELECT COMMANDS
+//			tokens.remove(0);
+//			if (tokens.size() != 0) {
+//				parseDoSelectCommands(tokens);
+//			}
+//		}
+//	}
+//	
+//	public void parseDoSelectCommands(ArrayList<Token> tokens) {
+//		if (this.parserHelper.isCorrectKeyword(tokens.get(0), "SWITCH")) { //SWITCH
+//			tokens.remove(0);
+//			if (tokens.size() != 0) {
+//				if (tokens.get(0).getType().name() == "ID") {
+//					String ID = tokens.get(0).getData();
+//					tokens.remove(0);
+//					if (tokens.size() != 0) {
+//						if (this.parserHelper.isCorrectKeyword(tokens.get(0), "PATH")) {
+//							tokens.remove(0);
+//							if (tokens.size() != 0) {
+//								A_Command command = new CommandBehavioralSelectSwitch(ID, parseBinaryKeywords(tokens.get(0)));
+//								this.parserHelper.getActionProcessor().schedule(command);
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+	
 }
+//}
