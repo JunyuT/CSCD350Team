@@ -29,7 +29,7 @@ public class MyParserHelper extends A_ParserHelper {
 				+ "TANK|TENDER|TRACK|TURNOUT|TURNTABLE|"
 				+ "UP|USE|"
 				+ "VIEW|"
-				+ "@WAIT|WIDTH|WITH|WORLD|WYE)"),
+				+ "@WAIT|WIDTH|WITH|WORLD|WYE(?!.*\\1))*$)"),
 		LONGITUDE("[0-9]+[*][0-9]+['][0-9]+[\\.][0-9]+[\"]"),
 		NUMBER("(-*[0-9]+\\.[0-9]*)"),
 		INTEGER("-*[0-9]+"),
