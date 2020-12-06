@@ -60,13 +60,12 @@ public class CommandParser {
 			}
 			
 			if (commandCode.matches("DOSELECTSWITCHIDPATH(PRIMARY|SECONDARY)")) { //COMMAND 8
-				System.out.println("reached");
-//				boolean primary = false;
-//				if (tokens.get(5).getData().toUpperCase().equals("PRIMARY")) {
-//					primary = true;
-//				}
-//				A_Command command = new CommandBehavioralSelectSwitch(tokens.get(3).getData(), primary);
-//				this.parserHelper.getActionProcessor().schedule(command);
+				boolean primary = false;
+				if (tokens.get(5).getData().toUpperCase().equals("PRIMARY")) {
+					primary = true;
+				}
+				A_Command command = new CommandBehavioralSelectSwitch(tokens.get(3).getData(), primary);
+				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			if(commandCode.equals("DOSETREFERENCEENGINEID")) { //COMMAND 12
 				A_Command command = new CommandBehavioralSetReference(tokens.get(4).getData());
