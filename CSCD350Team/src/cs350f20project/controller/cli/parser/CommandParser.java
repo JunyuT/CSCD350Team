@@ -13,6 +13,8 @@ import cs350f20project.controller.command.creational.CommandCreateTrackCrossover
 import cs350f20project.controller.command.creational.CommandCreateTrackLayout;
 import cs350f20project.controller.command.creational.CommandCreateTrackSwitchTurnout;
 import cs350f20project.controller.command.meta.*;
+import cs350f20project.controller.command.structural.CommandStructuralCommit;
+import cs350f20project.controller.command.structural.CommandStructuralUncouple;
 import cs350f20project.controller.timing.Time;
 import cs350f20project.datatype.Angle;
 import cs350f20project.datatype.CoordinatesDelta;
@@ -58,12 +60,13 @@ public class CommandParser {
 			}
 			
 			if (commandCode.matches("DOSELECTSWITCHIDPATH(PRIMARY|SECONDARY)")) { //COMMAND 8
-				boolean primary = false;
-				if (tokens.get(5).getData().toUpperCase().equals("PRIMARY")) {
-					primary = true;
-				}
-				A_Command command = new CommandBehavioralSelectSwitch(tokens.get(3).getData(), primary);
-				this.parserHelper.getActionProcessor().schedule(command);
+				System.out.println("reached");
+//				boolean primary = false;
+//				if (tokens.get(5).getData().toUpperCase().equals("PRIMARY")) {
+//					primary = true;
+//				}
+//				A_Command command = new CommandBehavioralSelectSwitch(tokens.get(3).getData(), primary);
+//				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			if(commandCode.equals("DOSETREFERENCEENGINEID")) { //COMMAND 12
 				A_Command command = new CommandBehavioralSetReference(tokens.get(4).getData());
@@ -249,12 +252,18 @@ public class CommandParser {
 				Angle ang = new Angle(Double.parseDouble(tokens.get(5).getData()));
 				A_Command command  = new CommandBehavioralSelectRoundhouse(tokens.get(3).getData(),ang,cw);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}		
+			}
+			
+			
+			
+			
+			
+			
 			if(commandCode.equals("DOSETREFERENCEENGINEID")) { //COMMAND 12
 				A_Command command = new CommandBehavioralSetReference(tokens.get(4).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			if(commandCode.equals("CREATEPOWERPOLEIDONTRACKIDDISTANCEINTFROMSTART")||commandCode.equals("CREATEPOWERPOLEIDONTRACKIDDISTANCEINTFROMEND")) { //COMMAND 23
+			if(commandCode.matches("CREATEPOWERPOLEIDONTRACKIDDISTANCEINTFROM(START|END)")) { //COMMAND 23
 				String poleID = tokens.get(3).getData();
 				String trackID = tokens.get(6).getData();
 				double distance = Double.parseDouble(tokens.get(8).getData());
