@@ -275,13 +275,15 @@ public class CommandParser {
 				A_Command command = new CommandCreatePowerPole(poleID,tl);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			if(commandCode.equals("CREATESTOCKIDIDASBOX")) { //COMMAND 28
-				String id = tokens.get(3).getData();
+			if(commandCode.equals("CREATESTOCKIDASBOX")) { //COMMAND 28
+				System.out.println("create box");
+				String id = tokens.get(2).getData();
 				A_Command command = new CommandCreateStockCarPassenger(id);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			if(commandCode.equals("CREATESTOCKIDIDASPASSENGER")) { //COMMAND 31
-				String id = tokens.get(3).getData();
+			if(commandCode.equals("CREATESTOCKIDASPASSENGER")) { //COMMAND 31
+				System.out.println("create passenger");
+				String id = tokens.get(2).getData();
 				A_Command command = new CommandCreateStockCarPassenger(id);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
