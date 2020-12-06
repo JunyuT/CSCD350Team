@@ -8,6 +8,7 @@ import cs350f20project.controller.command.creational.CommandCreatePowerStation;
 import cs350f20project.controller.command.creational.CommandCreateStockCarCaboose;
 import cs350f20project.controller.command.creational.CommandCreateStockCarPassenger;
 import cs350f20project.controller.command.creational.CommandCreateStockCarTank;
+import cs350f20project.controller.command.creational.CommandCreateStockEngineDiesel;
 import cs350f20project.controller.command.creational.CommandCreateTrackBridgeDraw;
 import cs350f20project.controller.command.creational.CommandCreateTrackCrossover;
 import cs350f20project.controller.command.creational.CommandCreateTrackLayout;
@@ -58,7 +59,15 @@ public class CommandParser {
 				A_Command command = new CommandBehavioralBrake(tokens.get(2).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			
+			if (commandCode.matches("DOSELECTROUNDHOUSEID(CLOCKWISE|COUNTERCLOCKWISE)INT")) { //COMMAND 7
+				boolean cw = false;
+				if(tokens.get(4).getData().toUpperCase().equals("CLOCKWISE")) {
+					cw = true;
+				}
+				Angle ang = new Angle(Double.parseDouble(tokens.get(5).getData()));
+				A_Command command  = new CommandBehavioralSelectRoundhouse(tokens.get(3).getData(),ang,cw);
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
 			if (commandCode.matches("DOSELECTSWITCHIDPATH(PRIMARY|SECONDARY)")) { //COMMAND 8
 				boolean primary = false;
 				if (tokens.get(5).getData().toUpperCase().equals("PRIMARY")) {
@@ -71,8 +80,6 @@ public class CommandParser {
 				A_Command command = new CommandBehavioralSetReference(tokens.get(4).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			
-			
 			
 			if (commandCode.equals("DOSETIDSPEEDNB")) { //COMMAND 15
 				double speed = Double.parseDouble(tokens.get(4).getData());
@@ -145,6 +152,24 @@ public class CommandParser {
 				A_Command command = new CommandCreateStockCarTank(tokens.get(3).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
+			
+			if(commandCode.matches("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROM(START|END)FACING(START|END)")) { //COMMAND 34
+				String dieselID = tokens.get(3).getData();
+				String trackID = tokens.get(8).getData();
+				Double distance = Double.parseDouble(tokens.get(10).getData());
+				boolean from = false;
+				boolean end = false;
+				if(tokens.get(12).getData().equalsIgnoreCase("start")) {
+					from = true;
+				}
+				if(tokens.get(14).getData().equalsIgnoreCase("start")) {
+					end = true;
+				}
+				TrackLocator tl = new TrackLocator(trackID,distance,from);
+				A_Command command = new CommandCreateStockEngineDiesel(dieselID,tl,end);
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			
 			if (commandCode.matches("CREATETRACKBRIDGEDRAWIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)ANGLE(NB|INT)")) { //COMMAND 39
 				String id = tokens.get(4).getData();
 				CoordinatesWorld reference;
@@ -257,15 +282,7 @@ public class CommandParser {
 				A_Command command = new CommandStructuralUncouple(tokens.get(2).getData(), tokens.get(4).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			if (commandCode.equals("DOSELECTROUNDHOUSEIDCLOCKWISEINT") || commandCode.equals("DOSELECTROUNDHOUSEIDCOUNTERCLOCKWISEINT")) { //COMMAND 7
-				boolean cw = false;
-				if(tokens.get(4).getData().toUpperCase().equals("CLOCKWISE")) {
-					cw = true;
-				}
-				Angle ang = new Angle(Double.parseDouble(tokens.get(5).getData()));
-				A_Command command  = new CommandBehavioralSelectRoundhouse(tokens.get(3).getData(),ang,cw);
-				this.parserHelper.getActionProcessor().schedule(command);
-			}
+
 			
 			
 			
@@ -276,9 +293,7 @@ public class CommandParser {
 
 
 
-			if(commandCode.matches("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROM(START|END)FACING(START|END)")) {
-				System.out.println("caught");
-			}
+
 			while (tokens.size() > 0) {
 				System.out.println(tokens.get(0).toString());
 				tokens.remove(0);
