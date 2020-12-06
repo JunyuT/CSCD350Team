@@ -5,6 +5,7 @@ import cs350f20project.controller.cli.TrackLocator;
 import cs350f20project.controller.command.*;
 import cs350f20project.controller.command.behavioral.*;
 import cs350f20project.controller.command.creational.CommandCreatePowerPole;
+import cs350f20project.controller.command.creational.CommandCreateStockCarPassenger;
 import cs350f20project.controller.command.meta.*;
 import cs350f20project.controller.timing.Time;
 import cs350f20project.datatype.Angle;
@@ -92,6 +93,16 @@ public class CommandParser {
 				}
 				TrackLocator tl = new TrackLocator(trackID,distance,start);
 				A_Command command = new CommandCreatePowerPole(poleID,tl);
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			if(commandCode.equals("CREATESTOCKIDIDASBOX")) { //COMMAND 28
+				String id = tokens.get(3).getData();
+				A_Command command = new CommandCreateStockCarPassenger(id);
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			if(commandCode.equals("CREATESTOCKIDIDASPASSENGER")) { //COMMAND 31
+				String id = tokens.get(3).getData();
+				A_Command command = new CommandCreateStockCarPassenger(id);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			while (tokens.size() > 0) {
