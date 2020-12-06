@@ -105,6 +105,9 @@ public class CommandParser {
 				A_Command command = new CommandCreateStockCarPassenger(id);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
+			if(commandCode.equals("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROMSTARTFACINGSTART")||commandCode.equals("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROMENDFACINGEND")||commandCode.equals("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROMSTARTFACINGEND")||commandCode.equals("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROMENDFACINGSTART")) {
+				System.out.println("caught");
+			}
 			while (tokens.size() > 0) {
 				System.out.println(tokens.get(0).toString());
 				tokens.remove(0);

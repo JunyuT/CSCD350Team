@@ -6,6 +6,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cs350f20project.controller.ActionProcessor;
+import cs350f20project.datatype.Latitude;
+import cs350f20project.datatype.Longitude;
 
 public class MyParserHelper extends A_ParserHelper {
 
@@ -14,8 +16,8 @@ public class MyParserHelper extends A_ParserHelper {
 	}
 	
 	public static enum TokenType{
-		KEYWORD("(?i)\\b(ANGLE|AS|"
-				+ "BOX|BRAKE|BRIDGE"
+		KEYWORD("(?i)(AND|ANGLE|AS|"
+				+ "BOX|BRAKE|BRIDGE|"
 				+ "CABOOSE|CATENARY|CATENARIES|CLOCKWISE|COMMIT|CLOSE|COUPLE|COUNTERCLOCKWISE|CREATE|CROSSING|CURVE|"
 				+ "DELTA|DIESEL|DIRECTION|DISTANCE|DO|DOWN|DRAW|DRAWBRIDGE|"
 				+ "END|ENGINE|ENTRY|@EXIT|"
@@ -27,10 +29,10 @@ public class MyParserHelper extends A_ParserHelper {
 				+ "REFERENCE|ROUNDHOUSE|@RUN|"
 				+ "SCREEN|SECONDARY|SELECT|SET|SPEED|SPURS|STATION|START|STOCK|STRAIGHT|SUBSTATION|SUBSTATIONS|SWITCH|"
 				+ "TANK|TENDER|TRACK|TURNOUT|TURNTABLE|"
-				+ "UP|USE|"
+				+ "UNCOUPLE|UP|USE|"
 				+ "VIEW|"
 				+ "@WAIT|WIDTH|WITH|WORLD|WYE)\\b"),
-		LONGITUDE("[0-9]+[*][0-9]+['][0-9]+[\\.][0-9]+[\"]"),
+		LONGITUDE("[0-9]+[*][0-9]+['][0-9]+[\\.]*[0-9]*[\"]"),
 		REFERENCE("\\$"),
 		STRING("'[\\w/]+'"),
 		NUMBER("(-*[0-9]+\\.[0-9]*)"),
@@ -103,82 +105,29 @@ public class MyParserHelper extends A_ParserHelper {
 		return false;
 	}
 	
-//	public String codifyKeyword(Token input) {
-//		switch (input.getData().toUpperCase()) {
-//		case "ANGLE": break;
-//		case "AS": break;
-//		case "BOX": break;
-//		case "BRAKE": break;
-//		case "BRIDGE": break;
-//		case "CABOOSE": break;
-//		case "CATENARY": break;
-//		case "CATENARIES": break;
-//		case "CLOCKWISE": break;
-//		case "COMMIT": break;
-//		case "CLOSE": break;
-//		case "COUPLE": break;
-//		case "COUNTERCLOCKWISE": break;
-//		case "CREATE": break;
-//		case "CROSSING": break;
-//		case "CURVE": break;
-//		case "DELTA": break;
-//		case "DIESEL": break;
-//		case "DIRECTION": break;
-//		case "DISTANCE": break;
-//		case "DO": break;
-//		case "DOWN": break;
-//		case "DRAW": break;
-//		case "DRAWBRIDGE": break;
-//		case "END": break;
-//		case "ENGINE": break;
-//		case "ENTRY": break;
-//		case "@EXIT": break;
-//		case "FACING": break;
-//		case "FLATBED": break;
-//		case "FROM": break;
-//		case "HEIGHT": break;
-//		case "LAYOUT": break;
-//		case "LENGTH": break;
-//		case "OFF": break;
-//		case "ON": break;
-//		case "OPEN": break;
-//		case "ORIGIN": break;
-//		case "PASSENGER": break;
-//		case "PATH": break;
-//		case "POSITION": break;
-//		case "POLE": break;
-//		case "POLES": break;
-//		case "POWER": break;
-//		case "PRIMARY": break;
-//		case "REFERENCE": break;
-//		case "ROUNDHOUSE": break;
-//		case "@RUN": break;
-//		case "SCREEN": break;
-//		case "SECONDARY": break;
-//		case "SELECT": break;
-//		case "SET": break;
-//		case "SPEED": break;
-//		case "SPURS": break;
-//		case "STATION": break;
-//		case "START": break;
-//		case "STOCK": break;
-//		case "STRAIGHT": break;
-//		case "SUBSTATION": break;
-//		case "SUBSTATIONS": break;
-//		case "SWITCH": break;
-//		case "TANK": break;
-//		case "TENDER": break;
-//		case "TRACK": break;
-//		case "TURNOUT": break;
-//		case "TURNTABLE": break;
-//		case "UP": break;
-//		case "USE": break;
-//		case "VIEW": break;
-//		case "@WAIT": break;
-//		case "": break;
-//		
-//		
-//		}
-//		return "??";
-//	}
+	public Latitude parseLatitude(Token token) {
+		String parsable = token.getData();
+		int houridx = parsable.indexOf('*');
+		int minuteidx = parsable.indexOf('\'');
+		int secondidx = parsable.indexOf('"');
+		int hour = Integer.parseInt(parsable.substring(0, houridx));
+		int minute = Integer.parseInt(parsable.substring(houridx + 1, minuteidx));
+		double second = Double.parseDouble(parsable.substring(minuteidx + 1, secondidx));
+		System.out.println(hour + " : " +  minute + " : " + second);
+		System.out.println(houridx + " : " +  minuteidx + " : " + secondidx);
+		return new Latitude(hour, minute, second);
+	}
+
+	public Longitude parseLongitude(Token token) {
+		String parsable = token.getData();
+		int houridx = parsable.indexOf('*');
+		int minuteidx = parsable.indexOf('\'');
+		int secondidx = parsable.indexOf('"');
+		int hour = Integer.parseInt(parsable.substring(0, houridx));
+		int minute = Integer.parseInt(parsable.substring(houridx + 1, minuteidx));
+		double second = Double.parseDouble(parsable.substring(minuteidx + 1, secondidx));
+		System.out.println(hour + " : " +  minute + " : " + second);
+		System.out.println(houridx + " : " +  minuteidx + " : " + secondidx);
+		return new Longitude(hour, minute, second);
+	}
 }
