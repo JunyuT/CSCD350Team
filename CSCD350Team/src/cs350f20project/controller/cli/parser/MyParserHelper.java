@@ -1,11 +1,11 @@
 package cs350f20project.controller.cli.parser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cs350f20project.controller.ActionProcessor;
+import cs350f20project.datatype.*;
 
 public class MyParserHelper extends A_ParserHelper {
 
@@ -14,23 +14,25 @@ public class MyParserHelper extends A_ParserHelper {
 	}
 	
 	public static enum TokenType{
-		KEYWORD("(?i)(ANGLE|AS|"
+		KEYWORD("(?i)(AND|ANGLE|AS|"
 				+ "BOX|BRAKE|BRIDGE"
-				+ "CABOOSE|CATENARY|CATENARIES|CLOCKWISE|COMMIT|CLOSE|COUPLE|COUNTERCLOCKWISE|CREATE|CROSSING|CURVE"
+				+ "CABOOSE|CATENARY|CATENARIES|CLOCKWISE|COMMIT|CLOSE|COUPLE|COUNTERCLOCKWISE|CREATE|CROSSING|CURVE|"
 				+ "DELTA|DIESEL|DIRECTION|DISTANCE|DO|DOWN|DRAW|DRAWBRIDGE|"
 				+ "END|ENGINE|ENTRY|@EXIT|"
 				+ "FACING|FLATBED|FROM|"
 				+ "HEIGHT|"
 				+ "LAYOUT|LENGTH|"
-				+ "OFF|ON|OPEN|ORIGIN"
+				+ "OFF|ON|OPEN|ORIGIN|"
 				+ "PASSENGER|PATH|POSITION|POLE|POLES|POWER|PRIMARY|"
-				+ "REFERENCE|ROUNDHOUSE|@RUN"
+				+ "REFERENCE|ROUNDHOUSE|@RUN|"
 				+ "SCREEN|SECONDARY|SELECT|SET|SPEED|SPURS|STATION|START|STOCK|STRAIGHT|SUBSTATION|SUBSTATIONS|SWITCH|"
-				+ "TANK|TENDER|TRACK|TURNOUT|TURNTABLE|"
-				+ "UP|USE|"
+				+ "TANK|TENDER|TRACK|TRACKS|TURNOUT|TURNTABLE|"
+				+ "UNCOUPLE|UP|USE|"
 				+ "VIEW|"
-				+ "@WAIT|WIDTH|WITH|WORLD|WYE(?!.*\\1))*$)"),
-		LONGITUDE("[0-9]+[*][0-9]+['][0-9]+[\\.][0-9]+[\"]"),
+				+ "@WAIT|WIDTH|WITH|WORLD|WYE)\\b"),
+		LONGITUDE("[0-9]+[*][0-9]+['][0-9]+[\\.]*[0-9]*[\"]"),
+		REFERENCE("\\$"),
+		STRING("'[\\w/]+'"),
 		NUMBER("(-*[0-9]+\\.[0-9]*)"),
 		INTEGER("-*[0-9]+"),
 		COORDINATESDELTA(":"),
@@ -67,6 +69,12 @@ public class MyParserHelper extends A_ParserHelper {
 			} else if (m.group(TokenType.ID.name()) != null) {
 				tokens.add(new Token(m.group(TokenType.ID.name()), TokenType.ID));
 				continue;
+			} else if (m.group(TokenType.STRING.name()) != null) {
+				tokens.add(new Token(m.group(TokenType.STRING.name()), TokenType.STRING));
+				continue;
+			} else if (m.group(TokenType.REFERENCE.name()) != null) {
+				tokens.add(new Token(m.group(TokenType.REFERENCE.name()), TokenType.REFERENCE));
+				continue;
 			} else if (m.group(TokenType.COORDINATESWORLD.name()) != null) {
 				tokens.add(new Token(m.group(TokenType.COORDINATESWORLD.name()), TokenType.COORDINATESWORLD));
 				continue;
@@ -93,6 +101,34 @@ public class MyParserHelper extends A_ParserHelper {
 			return true;
 		}
 		return false;
+	}
+	
+	//create power station bob reference 50*50'40"/50*23'23.425" delta 12.2 : 21.2 with substations carly
+	
+	public Latitude parseLatitude(Token token) {
+		String parsable = token.getData();
+		int houridx = parsable.indexOf('*');
+		int minuteidx = parsable.indexOf('\'');
+		int secondidx = parsable.indexOf('"');
+		int hour = Integer.parseInt(parsable.substring(0, houridx));
+		int minute = Integer.parseInt(parsable.substring(houridx + 1, minuteidx));
+		double second = Double.parseDouble(parsable.substring(minuteidx + 1, secondidx));
+		System.out.println(hour + " : " +  minute + " : " + second);
+		System.out.println(houridx + " : " +  minuteidx + " : " + secondidx);
+		return new Latitude(hour, minute, second);
+	}
+	
+	public Longitude parseLongitude(Token token) {
+		String parsable = token.getData();
+		int houridx = parsable.indexOf('*');
+		int minuteidx = parsable.indexOf('\'');
+		int secondidx = parsable.indexOf('"');
+		int hour = Integer.parseInt(parsable.substring(0, houridx));
+		int minute = Integer.parseInt(parsable.substring(houridx + 1, minuteidx));
+		double second = Double.parseDouble(parsable.substring(minuteidx + 1, secondidx));
+		System.out.println(hour + " : " +  minute + " : " + second);
+		System.out.println(houridx + " : " +  minuteidx + " : " + secondidx);
+		return new Longitude(hour, minute, second);
 	}
 	
 //	public String codifyKeyword(Token input) {
