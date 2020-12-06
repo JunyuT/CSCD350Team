@@ -72,9 +72,23 @@ public class CommandParser {
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			
+			
+			
 			if (commandCode.equals("DOSETIDSPEEDNB")) { //COMMAND 15
 				double speed = Double.parseDouble(tokens.get(4).getData());
 				A_Command command = new CommandBehavioralSetSpeed(tokens.get(2).getData(), speed);
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			if(commandCode.matches("CREATEPOWERPOLEIDONTRACKIDDISTANCEINTFROM(START|END)")) { //COMMAND 23
+				String poleID = tokens.get(3).getData();
+				String trackID = tokens.get(6).getData();
+				double distance = Double.parseDouble(tokens.get(8).getData());
+				boolean start = false;
+				if(tokens.get(10).getData().toUpperCase().equals(("START"))){
+					start = true;
+				}
+				TrackLocator tl = new TrackLocator(trackID,distance,start);
+				A_Command command = new CommandCreatePowerPole(poleID,tl);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			if (commandCode.matches("CREATEPOWERSTATIONIDREFERENCE(LX/LX|\\$ID)DELTA(NB|INT):(NB|INT)WITH(SUBSTATION|SUBSTATIONS)ID+")) {  //COMMAND 24
@@ -110,8 +124,8 @@ public class CommandParser {
 				A_Command command = new CommandCreatePowerStation(id1, wCoords, dCoords, ids);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			if(commandCode.equals("CREATESTOCKCARIDASBOX")) { //COMMAND 28
-				String id = tokens.get(3).getData();
+			if(commandCode.equals("CREATESTOCKIDASBOX")) { //COMMAND 28
+				String id = tokens.get(2).getData();
 				A_Command command = new CommandCreateStockCarPassenger(id);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
@@ -121,8 +135,8 @@ public class CommandParser {
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			
-			if(commandCode.equals("CREATESTOCKCARIDASPASSENGER")) { //COMMAND 31
-				String id = tokens.get(3).getData();
+			if(commandCode.equals("CREATESTOCKIDASPASSENGER")) { //COMMAND 31
+				String id = tokens.get(2).getData();
 				A_Command command = new CommandCreateStockCarPassenger(id);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
@@ -258,35 +272,11 @@ public class CommandParser {
 			
 			
 			
-			if(commandCode.equals("DOSETREFERENCEENGINEID")) { //COMMAND 12
-				A_Command command = new CommandBehavioralSetReference(tokens.get(4).getData());
-				this.parserHelper.getActionProcessor().schedule(command);
-			}
-			if(commandCode.matches("CREATEPOWERPOLEIDONTRACKIDDISTANCEINTFROM(START|END)")) { //COMMAND 23
-				String poleID = tokens.get(3).getData();
-				String trackID = tokens.get(6).getData();
-				double distance = Double.parseDouble(tokens.get(8).getData());
-				boolean start = false;
-				if(tokens.get(10).getData().toUpperCase().equals(("START"))){
-					start = true;
-				}
-				TrackLocator tl = new TrackLocator(trackID,distance,start);
-				A_Command command = new CommandCreatePowerPole(poleID,tl);
-				this.parserHelper.getActionProcessor().schedule(command);
-			}
-			if(commandCode.equals("CREATESTOCKIDASBOX")) { //COMMAND 28
-				System.out.println("create box");
-				String id = tokens.get(2).getData();
-				A_Command command = new CommandCreateStockCarPassenger(id);
-				this.parserHelper.getActionProcessor().schedule(command);
-			}
-			if(commandCode.equals("CREATESTOCKIDASPASSENGER")) { //COMMAND 31
-				System.out.println("create passenger");
-				String id = tokens.get(2).getData();
-				A_Command command = new CommandCreateStockCarPassenger(id);
-				this.parserHelper.getActionProcessor().schedule(command);
-			}
-			if(commandCode.equals("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROMSTARTFACINGSTART")||commandCode.equals("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROMENDFACINGEND")||commandCode.equals("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROMSTARTFACINGEND")||commandCode.equals("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROMENDFACINGSTART")) {
+
+
+
+
+			if(commandCode.matches("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCEINTFROM(START|END)FACING(START|END)")) {
 				System.out.println("caught");
 			}
 			while (tokens.size() > 0) {
