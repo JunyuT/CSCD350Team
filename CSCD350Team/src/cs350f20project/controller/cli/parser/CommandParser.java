@@ -66,7 +66,7 @@ public class CommandParser {
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			
-			if (commandCode.matches("CREATEPOWERSTATIONIDREFERENCE(LX/LX|\\$ID)DELTA(NB|INT):(NB|INT)WITH(SUBSTATION|SUBSTATIONS)ID.*")) {  //COMMAND 24
+			if (commandCode.matches("CREATEPOWERSTATIONIDREFERENCE(LX/LX|\\$ID)DELTA(NB|INT):(NB|INT)WITH(SUBSTATION|SUBSTATIONS)ID+")) {  //COMMAND 24
 				System.out.println(tokens.get(5).getData());
 				String id1 = tokens.get(3).getData();
 				CoordinatesWorld wCoords;
@@ -122,21 +122,98 @@ public class CommandParser {
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			if (commandCode.contains("CREATETRACKLAYOUTIDWITHTRACKSID")) { //COMMAND 45
-				System.out.println(tokens.subList(6, tokens.size()));
+			if (commandCode.matches("CREATETRACKBRIDGEDRAWIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)ANGLE(NB|INT)")) { //COMMAND 39
+				String id = tokens.get(4).getData();
+				CoordinatesWorld reference;
+				int idxoffset = 0;
+				if (tokens.get(6).getData().equals("$")) {
+					if (this.parserHelper.hasReference(tokens.get(7).getData())) {
+						reference = this.parserHelper.getReference(tokens.get(7).getData());
+						idxoffset = -1;
+					} else {
+						throw new RuntimeException("invalid reference");
+					}
+				} else {
+					Latitude lat = this.parserHelper.parseLatitude(tokens.get(6));
+					Longitude lon = this.parserHelper.parseLongitude(tokens.get(8));
+					reference = new CoordinatesWorld(lat, lon);
+				}
+				CoordinatesDelta dCoords1 = new CoordinatesDelta(Double.parseDouble(tokens.get(11 + idxoffset).getData()), Double.parseDouble(tokens.get(13 + idxoffset).getData()));
+				CoordinatesDelta dCoords2 = new CoordinatesDelta(Double.parseDouble(tokens.get(15 + idxoffset).getData()), Double.parseDouble(tokens.get(17 + idxoffset).getData()));
+				PointLocator point = new PointLocator(reference, dCoords1, dCoords2);
+				
+				Angle angle = new Angle(Double.parseDouble(tokens.get(19).getData()));
+				
+				A_Command command = new CommandCreateTrackBridgeDraw(id, point, angle);
+				this.parserHelper.getActionProcessor().schedule(command);
 				
 			}
 			
+			if (commandCode.matches("CREATETRACKCROSSOVERIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)START(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 42
+				String id = tokens.get(3).getData();
+				CoordinatesWorld reference;
+				int idxoffset = 0;
+				if (tokens.get(5).getData().equals("$")) {
+					if (this.parserHelper.hasReference(tokens.get(6).getData())) {
+						reference = this.parserHelper.getReference(tokens.get(6).getData());
+						idxoffset = -1;
+					} else {
+						throw new RuntimeException("invalid reference");
+					}
+				} else {
+					Latitude lat = this.parserHelper.parseLatitude(tokens.get(5));
+					Longitude lon = this.parserHelper.parseLongitude(tokens.get(7));
+					reference = new CoordinatesWorld(lat, lon);
+				}
+				CoordinatesDelta dCoords1 = new CoordinatesDelta(Double.parseDouble(tokens.get(10 + idxoffset).getData()), Double.parseDouble(tokens.get(12 + idxoffset).getData()));
+				CoordinatesDelta dCoords2 = new CoordinatesDelta(Double.parseDouble(tokens.get(14 + idxoffset).getData()), Double.parseDouble(tokens.get(16 + idxoffset).getData()));
+				CoordinatesDelta dCoords3 = new CoordinatesDelta(Double.parseDouble(tokens.get(18 + idxoffset).getData()), Double.parseDouble(tokens.get(20 + idxoffset).getData()));
+				CoordinatesDelta dCoords4 = new CoordinatesDelta(Double.parseDouble(tokens.get(22 + idxoffset).getData()), Double.parseDouble(tokens.get(24 + idxoffset).getData()));
+				
+				A_Command command = new CommandCreateTrackCrossover(id, reference, dCoords1, dCoords2, dCoords3, dCoords4);
+				this.parserHelper.getActionProcessor().schedule(command);
+				
+			}
 			
+			if (commandCode.matches("CREATETRACKLAYOUTIDWITHTRACKS(ID)+")) { //COMMAND 45
+				String id = tokens.get(3).getData();
+				ArrayList<String> tracks = new ArrayList<String>();
+				for (Token trackid : tokens.subList(6, tokens.size())) {
+					tracks.add(trackid.getData());
+				}
+				A_Command command = new CommandCreateTrackLayout(id, tracks);
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
 			
+			if (commandCode.matches("CREATETRACKSWITCHTURNOUTIDREFERENCE(LX/LX|\\$ID)STRAIGHTDELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)CURVEDELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)DISTANCEORIGIN(NB|INT)")) { //COMMAND 48
+				System.out.println("test");
+				String id = tokens.get(3).getData();
+				CoordinatesWorld reference;
+				int idxoffset = 0;
+				if (tokens.get(6).getData().equals("$")) {
+					if (this.parserHelper.hasReference(tokens.get(7).getData())) {
+						reference = this.parserHelper.getReference(tokens.get(7).getData());
+						idxoffset = -1;
+					} else {
+						throw new RuntimeException("invalid reference");
+					}
+				} else {
+					Latitude lat = this.parserHelper.parseLatitude(tokens.get(6));
+					Longitude lon = this.parserHelper.parseLongitude(tokens.get(8));
+					reference = new CoordinatesWorld(lat, lon);
+				}
+				CoordinatesDelta dCoords1 = new CoordinatesDelta(Double.parseDouble(tokens.get(12 + idxoffset).getData()), Double.parseDouble(tokens.get(14 + idxoffset).getData()));
+				CoordinatesDelta dCoords2 = new CoordinatesDelta(Double.parseDouble(tokens.get(16 + idxoffset).getData()), Double.parseDouble(tokens.get(18 + idxoffset).getData()));
+				CoordinatesDelta dCoords3 = new CoordinatesDelta(Double.parseDouble(tokens.get(22 + idxoffset).getData()), Double.parseDouble(tokens.get(24 + idxoffset).getData()));
+				CoordinatesDelta dCoords4 = new CoordinatesDelta(Double.parseDouble(tokens.get(26 + idxoffset).getData()), Double.parseDouble(tokens.get(28 + idxoffset).getData()));
+				double origindistance = Double.parseDouble(tokens.get(31 + idxoffset).getData());
+				
+				
+				CoordinatesDelta originCoords = ShapeArc.calculateDeltaOrigin(reference, dCoords3, dCoords4, origindistance); 
+				
+				A_Command command = new CommandCreateTrackSwitchTurnout(id, reference, dCoords1, dCoords2, dCoords3, dCoords4, originCoords);
+				this.parserHelper.getActionProcessor().schedule(command);	
+			}
 			
 			if (commandCode.equals("@EXIT")) { //COMMAND 51
 				A_Command command = new CommandMetaDoExit();
@@ -144,24 +221,16 @@ public class CommandParser {
 			}
 			
 			
-			
-			
 			if (commandCode.equals("@RUNSTR")) { //COMMAND 52
 				System.out.println("test");
 				A_Command command = new CommandMetaDoRun(tokens.get(1).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			
-			
-			
-			
-			
+						
 			if (commandCode.equals("COMMIT")) { //COMMAND 60
 				A_Command command = new CommandStructuralCommit();
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			
-			
 			
 			if (commandCode.equals("UNCOUPLESTOCKIDANDID")) { //COMMAND 65
 				A_Command command = new CommandStructuralUncouple(tokens.get(2).getData(), tokens.get(4).getData());
