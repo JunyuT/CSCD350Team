@@ -1,8 +1,10 @@
 package cs350f20project.controller.cli.parser;
 import java.util.ArrayList;
 
+import cs350f20project.controller.cli.TrackLocator;
 import cs350f20project.controller.command.*;
 import cs350f20project.controller.command.behavioral.*;
+import cs350f20project.controller.command.creational.CommandCreatePowerPole;
 import cs350f20project.controller.command.meta.*;
 import cs350f20project.controller.timing.Time;
 import cs350f20project.datatype.Angle;
@@ -67,7 +69,7 @@ public class CommandParser {
 				A_Command command = new CommandMetaDoExit();
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			if (commandCode.equals("DOSELECTROUNDHOUSEIDCLOCKWISEINT")) { //COMMAND 7
+			if (commandCode.equals("DOSELECTROUNDHOUSEIDCLOCKWISEINT") || commandCode.equals("DOSELECTROUNDHOUSEIDCOUNTERCLOCKWISEINT")) { //COMMAND 7
 				boolean cw = false;
 				if(tokens.get(4).getData().toUpperCase().equals("CLOCKWISE")) {
 					cw = true;
@@ -78,6 +80,18 @@ public class CommandParser {
 			}		
 			if(commandCode.equals("DOSETREFERENCEENGINEID")) { //COMMAND 12
 				A_Command command = new CommandBehavioralSetReference(tokens.get(4).getData());
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			if(commandCode.equals("CREATEPOWERPOLEIDONTRACKIDDISTANCEINTFROMSTART")||commandCode.equals("CREATEPOWERPOLEIDONTRACKIDDISTANCEINTFROMEND")) { //COMMAND 23
+				String poleID = tokens.get(3).getData();
+				String trackID = tokens.get(6).getData();
+				double distance = Double.parseDouble(tokens.get(8).getData());
+				boolean start = false;
+				if(tokens.get(10).getData().toUpperCase().equals(("START"))){
+					start = true;
+				}
+				TrackLocator tl = new TrackLocator(trackID,distance,start);
+				A_Command command = new CommandCreatePowerPole(poleID,tl);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			while (tokens.size() > 0) {
