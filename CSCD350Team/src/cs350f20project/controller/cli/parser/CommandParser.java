@@ -5,6 +5,7 @@ import cs350f20project.controller.command.*;
 import cs350f20project.controller.command.behavioral.*;
 import cs350f20project.controller.command.meta.*;
 import cs350f20project.controller.timing.Time;
+import cs350f20project.datatype.Angle;
 
 public class CommandParser {
 	private String commandText;
@@ -62,73 +63,23 @@ public class CommandParser {
 				A_Command command = new CommandBehavioralBrake(tokens.get(3).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
 			if (commandCode.equals("@EXIT")) { //COMMAND 51
 				A_Command command = new CommandMetaDoExit();
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-			
-			
+			if (commandCode.equals("DOSELECTROUNDHOUSEIDCLOCKWISEINT")) { //COMMAND 7
+				boolean cw = false;
+				if(tokens.get(4).getData().toUpperCase().equals("CLOCKWISE")) {
+					cw = true;
+				}
+				Angle ang = new Angle(Double.parseDouble(tokens.get(5).getData()));
+				A_Command command  = new CommandBehavioralSelectRoundhouse(tokens.get(3).getData(),ang,cw);
+				this.parserHelper.getActionProcessor().schedule(command);
+			}		
+			if(commandCode.equals("DOSETREFERENCEENGINEID")) { //COMMAND 12
+				A_Command command = new CommandBehavioralSetReference(tokens.get(4).getData());
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
 			while (tokens.size() > 0) {
 				System.out.println(tokens.get(0).toString());
 				tokens.remove(0);
