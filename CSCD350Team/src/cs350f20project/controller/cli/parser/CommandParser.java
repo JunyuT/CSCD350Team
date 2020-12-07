@@ -12,7 +12,9 @@ import cs350f20project.controller.command.creational.CommandCreateStockEngineDie
 import cs350f20project.controller.command.creational.CommandCreateTrackBridgeDraw;
 import cs350f20project.controller.command.creational.CommandCreateTrackCrossing;
 import cs350f20project.controller.command.creational.CommandCreateTrackCrossover;
+import cs350f20project.controller.command.creational.CommandCreateTrackEnd;
 import cs350f20project.controller.command.creational.CommandCreateTrackLayout;
+import cs350f20project.controller.command.creational.CommandCreateTrackStraight;
 import cs350f20project.controller.command.creational.CommandCreateTrackSwitchTurnout;
 import cs350f20project.controller.command.meta.*;
 import cs350f20project.controller.command.structural.CommandStructuralCommit;
@@ -248,6 +250,31 @@ public class CommandParser {
 				this.parserHelper.getActionProcessor().schedule(command);
 
 			}
+			
+			
+			if(commandCode.matches("CREATETRACKENDIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 44
+				String id = tokens.get(3).getData();
+				CoordinatesWorld reference;
+				if(tokens.get(5).getData().equals("$")) {
+					if(this.parserHelper.hasReference(tokens.get(6).getData())) {
+						reference = this.parserHelper.getReference(tokens.get(6).getData());
+					}else {
+						throw new RuntimeException("invalid reference");
+					}
+
+				}else {
+					Latitude lat = this.parserHelper.parseLatitude(tokens.get(5));
+					Longitude lon = this.parserHelper.parseLongitude(tokens.get(7));
+					reference = new CoordinatesWorld(lat,lon);
+				}
+				CoordinatesDelta start = new CoordinatesDelta(Double.parseDouble(tokens.get(9).getData()),Double.parseDouble(tokens.get(11).getData()));
+				CoordinatesDelta end = new CoordinatesDelta(Double.parseDouble(tokens.get(13).getData()),Double.parseDouble(tokens.get(15).getData()));
+				
+				PointLocator pl = new PointLocator(reference,start,end);
+				
+				A_Command command = new CommandCreateTrackEnd(id,pl);
+				this.parserHelper.getActionProcessor().schedule(command);
+			}
 
 			if (commandCode.matches("CREATETRACKLAYOUTIDWITHTRACKS(ID)+")) { //COMMAND 45
 				String id = tokens.get(3).getData();
@@ -257,6 +284,29 @@ public class CommandParser {
 				}
 				A_Command command = new CommandCreateTrackLayout(id, tracks);
 				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			
+			
+			if(commandCode.matches("CREATETRACKSTRAIGHTIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 48
+				String id = tokens.get(3).getData();
+				CoordinatesWorld reference;
+				if(tokens.get(5).getData().equals("$")) {
+					if(this.parserHelper.hasReference(tokens.get(6).getData())) {
+						reference = this.parserHelper.getReference(tokens.get(6).getData());
+					}else {
+						throw new RuntimeException("invalid reference");
+					}
+
+				}else {
+					Latitude lat = this.parserHelper.parseLatitude(tokens.get(5));
+					Longitude lon = this.parserHelper.parseLongitude(tokens.get(7));
+					reference = new CoordinatesWorld(lat,lon);
+				}
+				CoordinatesDelta start = new CoordinatesDelta(Double.parseDouble(tokens.get(9).getData()),Double.parseDouble(tokens.get(11).getData()));
+				CoordinatesDelta end = new CoordinatesDelta(Double.parseDouble(tokens.get(13).getData()),Double.parseDouble(tokens.get(15).getData()));
+				
+				PointLocator pl = new PointLocator(reference,start,end);
+				A_Command command = new CommandCreateTrackStraight(id,pl);
 			}
 
 			if (commandCode.matches("CREATETRACKSWITCHTURNOUTIDREFERENCE(LX/LX|\\$ID)STRAIGHTDELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)CURVEDELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)DISTANCEORIGIN(NB|INT)")) { //COMMAND 48
