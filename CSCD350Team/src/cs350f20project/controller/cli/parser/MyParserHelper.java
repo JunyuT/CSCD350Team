@@ -1,13 +1,11 @@
 package cs350f20project.controller.cli.parser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import cs350f20project.controller.ActionProcessor;
-import cs350f20project.datatype.Latitude;
-import cs350f20project.datatype.Longitude;
+import cs350f20project.datatype.*;
 
 public class MyParserHelper extends A_ParserHelper {
 
@@ -51,7 +49,7 @@ public class MyParserHelper extends A_ParserHelper {
 			return this.pattern;
 		}
 		
-	}	
+	}		
 	
 	protected ArrayList<Token> getContext(String input) {
 
@@ -105,6 +103,8 @@ public class MyParserHelper extends A_ParserHelper {
 		return false;
 	}
 	
+	//create power station bob reference 50*50'40"/50*23'23.425" delta 12.2 : 21.2 with substations carly *test command*
+	
 	public Latitude parseLatitude(Token token) {
 		String parsable = token.getData();
 		int houridx = parsable.indexOf('*');
@@ -117,7 +117,7 @@ public class MyParserHelper extends A_ParserHelper {
 		System.out.println(houridx + " : " +  minuteidx + " : " + secondidx);
 		return new Latitude(hour, minute, second);
 	}
-
+	
 	public Longitude parseLongitude(Token token) {
 		String parsable = token.getData();
 		int houridx = parsable.indexOf('*');
@@ -130,4 +130,5 @@ public class MyParserHelper extends A_ParserHelper {
 		System.out.println(houridx + " : " +  minuteidx + " : " + secondidx);
 		return new Longitude(hour, minute, second);
 	}
+	
 }
