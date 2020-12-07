@@ -10,6 +10,7 @@ import cs350f20project.controller.command.creational.CommandCreateStockCarPassen
 import cs350f20project.controller.command.creational.CommandCreateStockCarTank;
 import cs350f20project.controller.command.creational.CommandCreateStockEngineDiesel;
 import cs350f20project.controller.command.creational.CommandCreateTrackBridgeDraw;
+import cs350f20project.controller.command.creational.CommandCreateTrackCrossing;
 import cs350f20project.controller.command.creational.CommandCreateTrackCrossover;
 import cs350f20project.controller.command.creational.CommandCreateTrackLayout;
 import cs350f20project.controller.command.creational.CommandCreateTrackSwitchTurnout;
@@ -45,8 +46,8 @@ public class CommandParser {
 				case "LONGITUDE": commandCode += "LX"; break;
 				case "NUMBER": commandCode += "NB"; break;
 				case "INTEGER": commandCode += "INT"; break;
-				case "COORDINATEDELTA": commandCode += ":"; break;
-				case "COORDINATEWORLD": commandCode += "/"; break;
+				case "COORDINATESDELTA": commandCode += token.getData().toUpperCase(); break;
+				case "COORDINATESWORLD": commandCode += token.getData().toUpperCase(); break;
 				case "STRING": commandCode += "STR"; break;
 				case "REFERENCE": commandCode += "$"; break;
 				default: commandCode += "?"; break;
@@ -196,6 +197,31 @@ public class CommandParser {
 				this.parserHelper.getActionProcessor().schedule(command);
 
 			}
+			
+			if (commandCode.matches("CREATETRACKCROSSINGIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 41
+				String crossingID = tokens.get(3).getData();
+				CoordinatesWorld reference;
+				if(tokens.get(5).getData().equals("$")) {
+					if(this.parserHelper.hasReference(tokens.get(6).getData())) {
+						reference = this.parserHelper.getReference(tokens.get(6).getData());
+					}else {
+						throw new RuntimeException("invalid reference");
+					}
+
+				}else {
+					Latitude lat = this.parserHelper.parseLatitude(tokens.get(5));
+					Longitude lon = this.parserHelper.parseLongitude(tokens.get(7));
+					reference = new CoordinatesWorld(lat,lon);
+				}
+				CoordinatesDelta start = new CoordinatesDelta(Double.parseDouble(tokens.get(9).getData()),Double.parseDouble(tokens.get(11).getData()));
+				CoordinatesDelta end = new CoordinatesDelta(Double.parseDouble(tokens.get(13).getData()),Double.parseDouble(tokens.get(15).getData()));
+				
+				PointLocator pl = new PointLocator(reference,start,end);
+				A_Command command = new CommandCreateTrackCrossing(crossingID,pl);
+				
+				this.parserHelper.getActionProcessor().schedule(command);
+				
+			}
 
 			if (commandCode.matches("CREATETRACKCROSSOVERIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)START(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 42
 				String id = tokens.get(3).getData();
@@ -234,7 +260,6 @@ public class CommandParser {
 			}
 
 			if (commandCode.matches("CREATETRACKSWITCHTURNOUTIDREFERENCE(LX/LX|\\$ID)STRAIGHTDELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)CURVEDELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)DISTANCEORIGIN(NB|INT)")) { //COMMAND 48
-				System.out.println("test");
 				String id = tokens.get(3).getData();
 				CoordinatesWorld reference;
 				int idxoffset = 0;
