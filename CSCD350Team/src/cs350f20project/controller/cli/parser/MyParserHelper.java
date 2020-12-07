@@ -23,7 +23,7 @@ public class MyParserHelper extends A_ParserHelper {
 				+ "END|ENGINE|ENTRY|@EXIT|"
 				+ "FACING|FLATBED|FROM|"
 				+ "HEIGHT|"
-				+ "LAYOUT|LENGTH|"
+				+ "LAYOUT|LENGTH|LOCATE|"
 				+ "OFF|ON|OPEN|ORIGIN|"
 				+ "PASSENGER|PATH|POSITION|POLE|POLES|POWER|PRIMARY|"
 				+ "REFERENCE|ROUNDHOUSE|@RUN|"

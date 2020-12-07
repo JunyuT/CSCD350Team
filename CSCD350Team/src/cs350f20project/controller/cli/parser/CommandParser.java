@@ -378,6 +378,10 @@ public class CommandParser {
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
 			
+			if(commandCode.matches("LOCATESTOCKIDONTRACKIDDISTANCE(NB|INT)FROM(START|END)")) { //COMMAND 62
+				System.out.println("reached");
+			}
+			
 			if (commandCode.equals("UNCOUPLESTOCKIDANDID")) { //COMMAND 65
 				A_Command command = new CommandStructuralUncouple(tokens.get(2).getData(), tokens.get(4).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
