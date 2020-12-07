@@ -64,6 +64,7 @@ public class CommandParser {
 				A_Command command = new CommandBehavioralBrake(tokens.get(2).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
+			
 			if (commandCode.matches("DOSELECTROUNDHOUSEID(CLOCKWISE|COUNTERCLOCKWISE)INT")) { //COMMAND 7
 				boolean cw = false;
 				if(tokens.get(4).getData().toUpperCase().equals("CLOCKWISE")) {
@@ -73,6 +74,7 @@ public class CommandParser {
 				A_Command command  = new CommandBehavioralSelectRoundhouse(tokens.get(3).getData(),ang,cw);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
+			
 			if (commandCode.matches("DOSELECTSWITCHIDPATH(PRIMARY|SECONDARY)")) { //COMMAND 8
 				boolean primary = false;
 				if (tokens.get(5).getData().toUpperCase().equals("PRIMARY")) {
@@ -81,6 +83,7 @@ public class CommandParser {
 				A_Command command = new CommandBehavioralSelectSwitch(tokens.get(3).getData(), primary);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
+			
 			if(commandCode.equals("DOSETREFERENCEENGINEID")) { //COMMAND 12
 				A_Command command = new CommandBehavioralSetReference(tokens.get(4).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
@@ -91,6 +94,7 @@ public class CommandParser {
 				A_Command command = new CommandBehavioralSetSpeed(tokens.get(2).getData(), speed);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
+			
 			if(commandCode.matches("CREATEPOWERPOLEIDONTRACKIDDISTANCEINTFROM(START|END)")) { //COMMAND 23
 				String poleID = tokens.get(3).getData();
 				String trackID = tokens.get(6).getData();
@@ -103,6 +107,7 @@ public class CommandParser {
 				A_Command command = new CommandCreatePowerPole(poleID,tl);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
+			
 			if (commandCode.matches("CREATEPOWERSTATIONIDREFERENCE(LX/LX|\\$ID)DELTA(NB|INT):(NB|INT)WITH(SUBSTATION|SUBSTATIONS)ID+")) {  //COMMAND 24
 				System.out.println(tokens.get(5).getData());
 				String id1 = tokens.get(3).getData();
@@ -136,6 +141,7 @@ public class CommandParser {
 				A_Command command = new CommandCreatePowerStation(id1, wCoords, dCoords, ids);
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
+			
 			if(commandCode.equals("CREATESTOCKIDASBOX")) { //COMMAND 28
 				String id = tokens.get(2).getData();
 				A_Command command = new CommandCreateStockCarPassenger(id);
@@ -397,25 +403,10 @@ public class CommandParser {
 				A_Command command = new CommandStructuralUncouple(tokens.get(2).getData(), tokens.get(4).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
 			}
-
-			
-			
-			
-			
-			
-			
-
-
-
-
-
 			while (tokens.size() > 0) {
-				System.out.println(tokens.get(0).toString());
+				//System.out.println(tokens.get(0).toString());	//enable for verbose checking
 				tokens.remove(0);
 			}
-			
 		}
-		
-		
 	}
 }
