@@ -16,12 +16,12 @@ public class MyParserHelper extends A_ParserHelper {
 	public static enum TokenType{
 		KEYWORD("(?i)(AND|ANGLE|AS|"
 				+ "BOX|BRAKE|BRIDGE|"
-				+ "CABOOSE|CATENARY|CATENARIES|CLOCKWISE|COMMIT|CLOSE|COUPLE|COUNTERCLOCKWISE|CREATE|CROSSING|CURVE|"
+				+ "CABOOSE|CATENARY|CATENARIES|CLOCKWISE|COMMIT|CLOSE|COUPLE|COUNTERCLOCKWISE|CREATE|CROSSING|CROSSOVER|CURVE|"
 				+ "DELTA|DIESEL|DIRECTION|DISTANCE|DO|DOWN|DRAW|DRAWBRIDGE|"
 				+ "END|ENGINE|ENTRY|@EXIT|"
 				+ "FACING|FLATBED|FROM|"
 				+ "HEIGHT|"
-				+ "LAYOUT|LENGTH|"
+				+ "LAYOUT|LENGTH|LOCATE|"
 				+ "OFF|ON|OPEN|ORIGIN|"
 				+ "PASSENGER|PATH|POSITION|POLE|POLES|POWER|PRIMARY|"
 				+ "REFERENCE|ROUNDHOUSE|@RUN|"
@@ -103,7 +103,7 @@ public class MyParserHelper extends A_ParserHelper {
 		return false;
 	}
 	
-	//create power station bob reference 50*50'40"/50*23'23.425" delta 12.2 : 21.2 with substations carly
+	//create power station bob reference 50*50'40"/50*23'23.425" delta 12.2 : 21.2 with substations carly *test command*
 	
 	public Latitude parseLatitude(Token token) {
 		String parsable = token.getData();
@@ -131,82 +131,4 @@ public class MyParserHelper extends A_ParserHelper {
 		return new Longitude(hour, minute, second);
 	}
 	
-//	public String codifyKeyword(Token input) {
-//		switch (input.getData().toUpperCase()) {
-//		case "ANGLE": break;
-//		case "AS": break;
-//		case "BOX": break;
-//		case "BRAKE": break;
-//		case "BRIDGE": break;
-//		case "CABOOSE": break;
-//		case "CATENARY": break;
-//		case "CATENARIES": break;
-//		case "CLOCKWISE": break;
-//		case "COMMIT": break;
-//		case "CLOSE": break;
-//		case "COUPLE": break;
-//		case "COUNTERCLOCKWISE": break;
-//		case "CREATE": break;
-//		case "CROSSING": break;
-//		case "CURVE": break;
-//		case "DELTA": break;
-//		case "DIESEL": break;
-//		case "DIRECTION": break;
-//		case "DISTANCE": break;
-//		case "DO": break;
-//		case "DOWN": break;
-//		case "DRAW": break;
-//		case "DRAWBRIDGE": break;
-//		case "END": break;
-//		case "ENGINE": break;
-//		case "ENTRY": break;
-//		case "@EXIT": break;
-//		case "FACING": break;
-//		case "FLATBED": break;
-//		case "FROM": break;
-//		case "HEIGHT": break;
-//		case "LAYOUT": break;
-//		case "LENGTH": break;
-//		case "OFF": break;
-//		case "ON": break;
-//		case "OPEN": break;
-//		case "ORIGIN": break;
-//		case "PASSENGER": break;
-//		case "PATH": break;
-//		case "POSITION": break;
-//		case "POLE": break;
-//		case "POLES": break;
-//		case "POWER": break;
-//		case "PRIMARY": break;
-//		case "REFERENCE": break;
-//		case "ROUNDHOUSE": break;
-//		case "@RUN": break;
-//		case "SCREEN": break;
-//		case "SECONDARY": break;
-//		case "SELECT": break;
-//		case "SET": break;
-//		case "SPEED": break;
-//		case "SPURS": break;
-//		case "STATION": break;
-//		case "START": break;
-//		case "STOCK": break;
-//		case "STRAIGHT": break;
-//		case "SUBSTATION": break;
-//		case "SUBSTATIONS": break;
-//		case "SWITCH": break;
-//		case "TANK": break;
-//		case "TENDER": break;
-//		case "TRACK": break;
-//		case "TURNOUT": break;
-//		case "TURNTABLE": break;
-//		case "UP": break;
-//		case "USE": break;
-//		case "VIEW": break;
-//		case "@WAIT": break;
-//		case "": break;
-//		
-//		
-//		}
-//		return "??";
-//	}
 }
