@@ -296,7 +296,7 @@ public class CommandParser {
 
 			}
 			
-			if (commandCode.matches("CREATETRACKBRIDGEIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)ANGLE(NB|INT)")) { //COMMAND 40
+			if (commandCode.matches("CREATETRACKBRIDGEIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 40
 				String id = tokens.get(3).getData();
 				CoordinatesWorld reference;
 				int idxoffset = 0;
