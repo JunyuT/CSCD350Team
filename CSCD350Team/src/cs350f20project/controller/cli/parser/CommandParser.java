@@ -18,6 +18,7 @@ import cs350f20project.controller.command.creational.CommandCreateTrackStraight;
 import cs350f20project.controller.command.creational.CommandCreateTrackSwitchTurnout;
 import cs350f20project.controller.command.meta.*;
 import cs350f20project.controller.command.structural.CommandStructuralCommit;
+import cs350f20project.controller.command.structural.CommandStructuralLocate;
 import cs350f20project.controller.command.structural.CommandStructuralUncouple;
 import cs350f20project.controller.timing.Time;
 import cs350f20project.datatype.Angle;
@@ -379,6 +380,16 @@ public class CommandParser {
 			}
 			
 			if(commandCode.matches("LOCATESTOCKIDONTRACKIDDISTANCE(NB|INT)FROM(START|END)")) { //COMMAND 62
+				String id = tokens.get(2).getData();
+				String trackID = tokens.get(5).getData();
+				double distance = Double.parseDouble(tokens.get(7).getData());
+				boolean start = false;
+				if(tokens.get(9).getData().equalsIgnoreCase("start")) {
+					start = true;
+				}
+				TrackLocator tl = new TrackLocator(trackID,distance,start);
+				A_Command command = new CommandStructuralLocate(id,tl);
+				this.parserHelper.getActionProcessor().schedule(command);
 				System.out.println("reached");
 			}
 			
