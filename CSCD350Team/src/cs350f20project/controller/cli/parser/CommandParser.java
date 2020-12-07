@@ -22,6 +22,7 @@ import cs350f20project.controller.command.structural.CommandStructuralUncouple;
 import cs350f20project.controller.timing.Time;
 import cs350f20project.datatype.Angle;
 import cs350f20project.datatype.CoordinatesDelta;
+import cs350f20project.datatype.CoordinatesScreen;
 import cs350f20project.datatype.CoordinatesWorld;
 import cs350f20project.datatype.Latitude;
 import cs350f20project.datatype.Longitude;
@@ -287,7 +288,7 @@ public class CommandParser {
 			}
 			
 			
-			if(commandCode.matches("CREATETRACKSTRAIGHTIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 48
+			if(commandCode.matches("CREATETRACKSTRAIGHTIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 47
 				String id = tokens.get(3).getData();
 				CoordinatesWorld reference;
 				if(tokens.get(5).getData().equals("$")) {
@@ -346,6 +347,30 @@ public class CommandParser {
 				System.out.println("test");
 				A_Command command = new CommandMetaDoRun(tokens.get(1).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
+			}
+			if(commandCode.matches("OPENVIEWIDORIGIN(LX/LX|\\$ID)WORLDWIDTHINTSCREENWIDTHINTHEIGHTINT")) { //COMMAND 56
+				String id = tokens.get(2).getData();
+				CoordinatesWorld reference;
+				int worldWidth, length, height;
+				worldWidth = Integer.parseInt(tokens.get(8).getData());
+				length = Integer.parseInt(tokens.get(11).getData());
+				height = Integer.parseInt(tokens.get(13).getData());
+				
+				if(tokens.get(4).equals('$')) {
+					if(this.parserHelper.hasReference(tokens.get(5).getData())) {
+						reference = this.parserHelper.getReference(tokens.get(5).getData());
+					}else {
+						throw new RuntimeException("invalid reference");
+					}
+				}else {
+					Latitude lat = this.parserHelper.parseLatitude(tokens.get(4));
+					Longitude lon = this.parserHelper.parseLongitude(tokens.get(6));
+					reference = new CoordinatesWorld(lat, lon);
+				}
+				CoordinatesScreen ss = new CoordinatesScreen(length,height);
+				A_Command command = new CommandMetaViewGenerate(id,reference,worldWidth,ss);
+				
+				System.out.println("here");
 			}
 						
 			if (commandCode.equals("COMMIT")) { //COMMAND 60
