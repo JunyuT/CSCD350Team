@@ -467,7 +467,7 @@ public class CommandParser {
 			} else
 			
 			if (commandCode.matches("CREATETRACKSWITCHTURNOUTIDREFERENCE(LX/LX|\\$ID)STRAIGHTDELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)CURVEDELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)DISTANCEORIGIN(NB|INT)")) { //COMMAND 48
-				String id = tokens.get(3).getData();
+				String id = tokens.get(4).getData();
 				CoordinatesWorld reference;
 				int idxoffset = 0;
 				if (tokens.get(6).getData().equals("$")) {
