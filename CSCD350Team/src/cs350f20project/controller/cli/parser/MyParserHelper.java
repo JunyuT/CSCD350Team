@@ -32,7 +32,7 @@ public class MyParserHelper extends A_ParserHelper {
 				+ "@WAIT|WIDTH|WITH|WORLD|WYE)\\b"),
 		LONGITUDE("[0-9]+[*][0-9]+['][0-9]+[\\.]*[0-9]*[\"]"),
 		REFERENCE("\\$"),
-		STRING("'[\\w/]+'"),
+		STRING("'.+'"),
 		NUMBER("(-*[0-9]+\\.[0-9]*)"),
 		INTEGER("-*[0-9]+"),
 		COORDINATESDELTA(":"),

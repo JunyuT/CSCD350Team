@@ -1,4 +1,5 @@
 package cs350f20project.controller.cli.parser;
+import java.io.File;
 import java.util.ArrayList;
 
 import cs350f20project.controller.cli.TrackLocator;
@@ -531,8 +532,16 @@ public class CommandParser {
 			
 			
 			if (commandCode.equals("@RUNSTR")) { //COMMAND 52
-				A_Command command = new CommandMetaDoRun(tokens.get(1).getData());
-				this.parserHelper.getActionProcessor().schedule(command);
+				String input = tokens.get(1).getData();
+				input = input.substring(1, input.length() - 1);
+				System.out.println(input);
+				File file = new File(input);
+				if (file.exists()) {
+					A_Command command = new CommandMetaDoRun(input);
+					this.parserHelper.getActionProcessor().schedule(command);
+				} else {
+					throw new RuntimeException("Invalid File");
+				}
 			} else
 			
 			if (commandCode.matches("@WAIT(NB|INT)")) { //COMMAND 54 *OPTIONAL but seemed useful so I added it.
