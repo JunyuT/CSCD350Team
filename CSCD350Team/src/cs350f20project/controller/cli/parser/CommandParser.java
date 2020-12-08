@@ -44,7 +44,7 @@ public class CommandParser {
 			if (commandCode.equals("DOBRAKEID")) { //COMMAND 2
 				A_Command command = new CommandBehavioralBrake(tokens.get(2).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("DOSELECTDRAWBRIDGEIDPOSITION(UP|DOWN)")) { //COMMAND 6
 				boolean isBridgeUp = false;
@@ -53,7 +53,7 @@ public class CommandParser {
 				}
 				A_Command command = new CommandBehavioralSelectBridge(tokens.get(3).getData(), isBridgeUp);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("DOSELECTROUNDHOUSEIDPOSITION(NB|INT)(CLOCKWISE|COUNTERCLOCKWISE)")) { //COMMAND 7
 				boolean cw = false;
@@ -64,7 +64,7 @@ public class CommandParser {
 				
 				A_Command command  = new CommandBehavioralSelectRoundhouse(tokens.get(3).getData(),ang,cw);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 						
 			if (commandCode.matches("DOSELECTSWITCHIDPATH(PRIMARY|SECONDARY)")) { //COMMAND 8
 				boolean primary = false;
@@ -73,7 +73,7 @@ public class CommandParser {
 				}
 				A_Command command = new CommandBehavioralSelectSwitch(tokens.get(3).getData(), primary);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("DOSETIDDIRECTION(FORWARD|BACKWARD)")) { //COMMAND 11
 				boolean isDirectionForward = false;
@@ -82,18 +82,18 @@ public class CommandParser {
 				}
 				A_Command command = new CommandBehavioralSetDirection(tokens.get(3).getData(), isDirectionForward);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if(commandCode.equals("DOSETREFERENCEENGINEID")) { //COMMAND 12
 				A_Command command = new CommandBehavioralSetReference(tokens.get(4).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("DOSETIDSPEED(NB|INT)")) { //COMMAND 15
 				double speed = Double.parseDouble(tokens.get(4).getData());
 				A_Command command = new CommandBehavioralSetSpeed(tokens.get(2).getData(), speed);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("CREATEPOWERCATENARYIDWITHPOLES(ID)+")) { //COMMAND 22
 				String catenaryID = tokens.get(3).getData();
@@ -108,7 +108,7 @@ public class CommandParser {
 				}
 				A_Command command = new CommandCreatePowerCatenary(catenaryID, ids);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if(commandCode.matches("CREATEPOWERPOLEIDONTRACKIDDISTANCE(NB|INT)FROM(START|END)")) { //COMMAND 23
 				String poleID = tokens.get(3).getData();
@@ -122,7 +122,7 @@ public class CommandParser {
 				
 				A_Command command = new CommandCreatePowerPole(poleID, tl);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("CREATEPOWERSTATIONIDREFERENCE(LX/LX|\\$ID)DELTA(NB|INT):(NB|INT)WITH(SUBSTATION|SUBSTATIONS)(ID)+")) {  //COMMAND 24
 				String id1 = tokens.get(3).getData();
@@ -158,7 +158,7 @@ public class CommandParser {
 				}
 				A_Command command = new CommandCreatePowerStation(id1, wCoords, dCoords, ids);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("CREATEPOWERSUBSTATIONIDREFERENCE(LX/LX|\\$ID)DELTA(NB|INT):(NB|INT)WITHCATENARIES(ID+)")) {  //COMMAND 25
 				String id1 = tokens.get(3).getData();
@@ -190,39 +190,39 @@ public class CommandParser {
 				}
 				A_Command command = new CommandCreatePowerSubstation(id1, wCoords, dCoords, ids);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if(commandCode.equals("CREATESTOCKCARIDASBOX")) { //COMMAND 28
 				String id = tokens.get(3).getData();
 				A_Command command = new CommandCreateStockCarBox(id);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.equals("CREATESTOCKCARIDASCABOOSE")) { //COMMAND 29
 				A_Command command = new CommandCreateStockCarCaboose(tokens.get(3).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.equals("CREATESTOCKCARIDASFLATBED")) { //COMMAND 30	
 				A_Command command = new CommandCreateStockCarFlatbed(tokens.get(3).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if(commandCode.equals("CREATESTOCKCARIDASPASSENGER")) { //COMMAND 31
 				String id = tokens.get(3).getData();
 				A_Command command = new CommandCreateStockCarPassenger(id);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.equals("CREATESTOCKCARIDASTANK")) { //COMMAND 32
 				A_Command command = new CommandCreateStockCarTank(tokens.get(3).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.equals("CREATESTOCKCARIDASTENDER")) { //COMMAND 33
 				A_Command command = new CommandCreateStockCarTender(tokens.get(3).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if(commandCode.matches("CREATESTOCKENGINEIDASDIESELONTRACKIDDISTANCE(NB|INT)FROM(START|END)FACING(START|END)")) { //COMMAND 34
 				String dieselID = tokens.get(3).getData();
@@ -239,7 +239,7 @@ public class CommandParser {
 				TrackLocator tl = new TrackLocator(trackID,distance,from);
 				A_Command command = new CommandCreateStockEngineDiesel(dieselID,tl,end);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("CREATETRACKBRIDGEDRAWIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)ANGLE(NB|INT)")) { //COMMAND 39
 				String id = tokens.get(4).getData();
@@ -266,7 +266,7 @@ public class CommandParser {
 				A_Command command = new CommandCreateTrackBridgeDraw(id, point, angle);
 				this.parserHelper.getActionProcessor().schedule(command);
 				
-			}
+			} else
 			
 			if (commandCode.matches("CREATETRACKBRIDGEIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 40
 				String id = tokens.get(3).getData();
@@ -290,7 +290,7 @@ public class CommandParser {
 
 				A_Command command = new CommandCreateTrackBridgeFixed(id, point);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("CREATETRACKCROSSINGIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 41
 				String crossingID = tokens.get(3).getData();
@@ -318,7 +318,7 @@ public class CommandParser {
 				
 				this.parserHelper.getActionProcessor().schedule(command);
 				
-			}
+			} else
 			
 			if (commandCode.matches("CREATETRACKCROSSOVERIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)START(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 42
 				String id = tokens.get(3).getData();
@@ -344,7 +344,7 @@ public class CommandParser {
 				A_Command command = new CommandCreateTrackCrossover(id, reference, dCoords1, dCoords2, dCoords3, dCoords4);
 				this.parserHelper.getActionProcessor().schedule(command);
 				
-			}
+			} else
 			 
 			if (commandCode.matches("CREATETRACKCURVEIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)((DISTANCEORIGIN(NB|INT))|(ORIGIN(NB|INT):(NB|INT)))")) { //COMMAND 43 NEEDS FIXING
 				String id = tokens.get(3).getData();
@@ -374,7 +374,7 @@ public class CommandParser {
 	                createCurve = new CommandCreateTrackCurve(id, reference, delta1, delta2, ortho2);
 	            }
 	            this.parserHelper.getActionProcessor().schedule(createCurve);
-			}
+			} else
 			
 			if(commandCode.matches("CREATETRACKENDIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 44
 				String id = tokens.get(3).getData();
@@ -400,7 +400,7 @@ public class CommandParser {
 				
 				A_Command command = new CommandCreateTrackEnd(id,pl);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("CREATETRACKLAYOUTIDWITHTRACKS(ID)+")) { //COMMAND 45
 				String id = tokens.get(3).getData();
@@ -410,7 +410,7 @@ public class CommandParser {
 				}
 				A_Command command = new CommandCreateTrackLayout(id, tracks);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("CREATETRACKROUNDHOUSEIDREFERENCE(LX/LX|\\$ID)DELTAORIGIN(NB|INT):(NB|INT)ANGLEENTRY(NB|INT)START(NB|INT)END(NB|INT)WITHINTSPURSLENGTH(NB|INT)TURNTABLELENGTH(NB|INT)")) { //COMMAND 46 NEEDS FIXING
 				String id = tokens.get(3).getData();
@@ -437,7 +437,7 @@ public class CommandParser {
 	            double num2 = Double.parseDouble(tokens.get(27 + idxoffset).getData());
 	            A_Command createRound = new CommandCreateTrackRoundhouse(id, reference, delta1, angle1, angle2, angle3, integer, num1, num2);
 	            this.parserHelper.getActionProcessor().schedule(createRound);
-			}
+			} else
 			
 			if(commandCode.matches("CREATETRACKSTRAIGHTIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)")) { //COMMAND 47
 				String id = tokens.get(3).getData();
@@ -463,7 +463,7 @@ public class CommandParser {
 				
 				A_Command command = new CommandCreateTrackStraight(id,pl);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("CREATETRACKSWITCHTURNOUTIDREFERENCE(LX/LX|\\$ID)STRAIGHTDELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)CURVEDELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)DISTANCEORIGIN(NB|INT)")) { //COMMAND 48
 				String id = tokens.get(3).getData();
@@ -492,7 +492,7 @@ public class CommandParser {
 				
 				A_Command command = new CommandCreateTrackSwitchTurnout(id, reference, dCoords1, dCoords2, dCoords3, dCoords4, originCoords);
 				this.parserHelper.getActionProcessor().schedule(command);	
-			}
+			} else
 			
 			if (commandCode.matches("CREATETRACKSWITCHWYEIDREFERENCE(LX/LX|\\$ID)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)DISTANCEORIGIN(NB|INT)DELTASTART(NB|INT):(NB|INT)END(NB|INT):(NB|INT)DISTANCEORIGIN(NB|INT)")) { //COMMAND 49
 				String id = tokens.get(4).getData();
@@ -522,29 +522,29 @@ public class CommandParser {
 				
 				A_Command command = new CommandCreateTrackSwitchWye(id, reference, dCoords1, dCoords2, originCoords1, dCoords3, dCoords4, originCoords2);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}	
+			} else
 			
 			if (commandCode.equals("@EXIT")) { //COMMAND 51
 				A_Command command = new CommandMetaDoExit();
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			
 			if (commandCode.equals("@RUNSTR")) { //COMMAND 52
 				A_Command command = new CommandMetaDoRun(tokens.get(1).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.matches("@WAIT(NB|INT)")) { //COMMAND 54 *OPTIONAL but seemed useful so I added it.
 				Time time = new Time(Double.parseDouble(tokens.get(1).getData()));
 				A_Command command = new CommandMetaDoWait(time);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.equals("CLOSEVIEWID")) { //COMMAND 55
 				A_Command command = new CommandMetaViewDestroy(tokens.get(2).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if(commandCode.matches("OPENVIEWIDORIGIN(LX/LX|\\$ID)WORLDWIDTHINTSCREENWIDTHINTHEIGHTINT")) { //COMMAND 56
 				String id = tokens.get(2).getData();
@@ -552,7 +552,7 @@ public class CommandParser {
 				int worldWidth, length, height;
 				int idxoffset = 0;
 
-				if(tokens.get(4).equals('$')) {
+				if(tokens.get(4).getData().equals("$")) {
 					if(this.parserHelper.hasReference(tokens.get(5).getData())) {
 						reference = this.parserHelper.getReference(tokens.get(5).getData());
 						idxoffset = -1;
@@ -573,17 +573,17 @@ public class CommandParser {
 				
 				A_Command command = new CommandMetaViewGenerate(id,reference,worldWidth,ss);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 						
 			if (commandCode.equals("COMMIT")) { //COMMAND 60
 				A_Command command = new CommandStructuralCommit();
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.equals("COUPLESTOCKIDANDID")) { //COMMAND 61
 				A_Command command = new CommandStructuralCouple(tokens.get(2).getData(), tokens.get(4).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if(commandCode.matches("LOCATESTOCKIDONTRACKIDDISTANCE(NB|INT)FROM(START|END)")) { //COMMAND 62
 				String id = tokens.get(2).getData();
@@ -597,12 +597,12 @@ public class CommandParser {
 				
 				A_Command command = new CommandStructuralLocate(id,tl);
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.equals("UNCOUPLESTOCKIDANDID")) { //COMMAND 65
 				A_Command command = new CommandStructuralUncouple(tokens.get(2).getData(), tokens.get(4).getData());
 				this.parserHelper.getActionProcessor().schedule(command);
-			}
+			} else
 			
 			if (commandCode.equals("USEIDASREFERENCELX/LX")) { //COMMAND 66
 				CoordinatesWorld reference;
@@ -610,6 +610,8 @@ public class CommandParser {
 				Longitude lon = this.parserHelper.parseLongitude(tokens.get(6));
 				reference = new CoordinatesWorld(lat, lon);
 				this.parserHelper.addReference(tokens.get(1).getData(), reference);
+			} else {
+				throw new RuntimeException("Invalid Command");
 			}
 			
 			while (tokens.size() > 0) {
