@@ -113,8 +113,6 @@ public class MyParserHelper extends A_ParserHelper {
 		int hour = Integer.parseInt(parsable.substring(0, houridx));
 		int minute = Integer.parseInt(parsable.substring(houridx + 1, minuteidx));
 		double second = Double.parseDouble(parsable.substring(minuteidx + 1, secondidx));
-		System.out.println(hour + " : " +  minute + " : " + second);
-		System.out.println(houridx + " : " +  minuteidx + " : " + secondidx);
 		return new Latitude(hour, minute, second);
 	}
 	
@@ -126,8 +124,6 @@ public class MyParserHelper extends A_ParserHelper {
 		int hour = Integer.parseInt(parsable.substring(0, houridx));
 		int minute = Integer.parseInt(parsable.substring(houridx + 1, minuteidx));
 		double second = Double.parseDouble(parsable.substring(minuteidx + 1, secondidx));
-		System.out.println(hour + " : " +  minute + " : " + second);
-		System.out.println(houridx + " : " +  minuteidx + " : " + secondidx);
 		return new Longitude(hour, minute, second);
 	}
 	
